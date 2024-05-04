@@ -1,7 +1,26 @@
 ﻿@page "/"
+@inject IDbContextFactory<AdventureWorksContext> DbFactory
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+First Product: @FirstProductName
+
+@code {
+    public string FirstProductName { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var context = DbFactory.CreateDbContext();
+
+        var product = await context.Products.FirstOrDefaultAsync();
+
+        if (product is not null)
+        {
+            FirstProductName = product.Name;
+        }
+    }
+}
