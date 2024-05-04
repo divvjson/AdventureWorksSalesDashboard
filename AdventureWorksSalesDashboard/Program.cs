@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContextFactory<AdventureWorksContext>(options =>
 {
-    var dataSource = Secrets.GetValue("DbDataSource");
+    var dataSource = builder.Environment.IsDevelopment() ? Secrets.GetValue("DbDataSource") : "localhost";
     var initialCatalog = Secrets.GetValue("DbInitialCatalog");
     var userId = Secrets.GetValue("DbUserID");
     var password = Secrets.GetValue("DbPassword");
