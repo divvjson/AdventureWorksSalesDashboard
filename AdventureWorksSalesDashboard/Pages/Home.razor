@@ -9,7 +9,13 @@ Welcome to your new app.
 
 First Product: @FirstProductName
 
+Current count: @CurrentCount
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Increment">Increment</MudButton>
+
 @code {
+    public int CurrentCount { get; set; }
+
     public string FirstProductName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -22,5 +28,10 @@ First Product: @FirstProductName
         {
             FirstProductName = product.Name;
         }
+    }
+
+    private void Increment()
+    {
+        CurrentCount++;
     }
 }

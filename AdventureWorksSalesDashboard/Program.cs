@@ -2,6 +2,7 @@ using AdventureWorksSalesDashboard;
 using AdventureWorksSalesDashboard.Entities;
 using AdventureWorksSalesDashboard.Utilities;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddDbContextFactory<AdventureWorksContext>(options =>
 builder.Services
     .AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 
