@@ -4,4 +4,20 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-@Body
+<MudLayout>
+    <MudDrawer @bind-Open="@open" Elevation="1">
+        Drawer
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool open = true;
+
+    void ToggleDrawer()
+    {
+        open = !open;
+    }
+}
