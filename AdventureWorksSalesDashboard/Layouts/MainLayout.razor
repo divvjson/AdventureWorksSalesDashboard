@@ -1,12 +1,13 @@
 ﻿@inherits LayoutComponentBase
+@inject DrawerService DrawerService
 
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudDrawer @bind-Open="@IsOpen" Elevation="1">
-        <DrawerContent OnClose="@CloseDrawer" />
+    <MudDrawer @bind-Open="@DrawerService.IsOpen" Elevation="1">
+        <DrawerContent />
     </MudDrawer>
     <MudMainContent>
         @Body
@@ -14,10 +15,13 @@
 </MudLayout>
 
 @code {
-    public bool IsOpen { get; set; } = true;
-
-    public void CloseDrawer()
+    protected override void OnInitialized()
     {
-        IsOpen = false;
+        DrawerService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DrawerService.OnChange -= StateHasChanged;
     }
 }

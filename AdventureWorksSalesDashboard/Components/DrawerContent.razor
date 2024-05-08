@@ -1,4 +1,6 @@
-﻿<div class="drawer-content">
+﻿@inject DrawerService DrawerService
+
+<div class="drawer-content">
     <MudIconButton Style="position: absolute; top: 8px; left: 8px;"
                    Icon="@Icons.Material.Outlined.Close"
                    Size="Size.Small"
@@ -8,11 +10,8 @@
 </div>
 
 @code {
-    [Parameter]
-    public EventCallback<bool> OnClose { get; set; }
-
-    private async Task OnCloseClicked()
+    private void OnCloseClicked()
     {
-        await OnClose.InvokeAsync(false);
+        DrawerService.Close();
     }
 }

@@ -1,5 +1,6 @@
 using AdventureWorksSalesDashboard;
 using AdventureWorksSalesDashboard.Entities;
+using AdventureWorksSalesDashboard.Services;
 using AdventureWorksSalesDashboard.Utilities;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
@@ -24,6 +25,7 @@ builder.Services
     .AddInteractiveServerComponents();
 
 builder.Services.AddMudServices();
+builder.Services.AddScoped<DrawerService>();
 
 var app = builder.Build();
 

@@ -1,14 +1,55 @@
 ﻿@page "/"
+@inject DrawerService DrawerService
 @inject IDbContextFactory<AdventureWorksContext> DbFactory
 
 <PageTitle>Home</PageTitle>
 
 <div class="home">
-    <MudIconButton Style="position: fixed; margin: 8px;"
-                   Icon="@Icons.Material.Outlined.Menu"
-                   Size="Size.Small"
-                   Variant="Variant.Filled"
-                   Color="Color.Primary" />
+    @if (DrawerService.IsOpen is false)
+    {
+        <MudIconButton Style="position: fixed; margin: 8px;"
+                       Icon="@Icons.Material.Outlined.Menu"
+                       Size="Size.Small"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="OpenDrawer" />
+    }
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
+    <h1>Home</h1>
 </div>
 
 @code {
@@ -25,4 +66,24 @@
     //         FirstProductName = product.Name;
     //     }
     // }
+
+    protected override void OnInitialized()
+    {
+        DrawerService.OnChange += HandleDrawerStateChange;
+    }
+
+    private void HandleDrawerStateChange()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OpenDrawer()
+    {
+        DrawerService.Open();
+    }
+
+    public void Dispose()
+    {
+        DrawerService.OnChange -= HandleDrawerStateChange;
+    }
 }
