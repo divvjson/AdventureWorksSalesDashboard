@@ -5,8 +5,8 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudDrawer @bind-Open="@open" Elevation="1">
-        Drawer
+    <MudDrawer @bind-Open="@IsOpen" Elevation="1">
+        <DrawerContent OnClose="@CloseDrawer" />
     </MudDrawer>
     <MudMainContent>
         @Body
@@ -14,10 +14,10 @@
 </MudLayout>
 
 @code {
-    bool open = true;
+    public bool IsOpen { get; set; } = true;
 
-    void ToggleDrawer()
+    public void CloseDrawer()
     {
-        open = !open;
+        IsOpen = false;
     }
 }
