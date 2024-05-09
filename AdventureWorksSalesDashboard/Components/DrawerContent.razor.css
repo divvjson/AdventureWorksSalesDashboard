@@ -6,14 +6,26 @@
 }
 
 .logo-container {
-    margin-top: 8px;
-    height: 110px;
+    height: 120px;
     display: flex;
     justify-content: center;
+    padding: 8px;
 }
 
 .logo {
     height: 100%;
     object-fit: cover;
     border-radius: 4px;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    row-gap: 8px;
+}
+
+.container-title {
+    font-size: 13px;
+    font-weight: 600;
 }

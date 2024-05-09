@@ -1,4 +1,6 @@
-﻿@inject DrawerService DrawerService
+﻿@using MudBlazor.Services
+@inject DrawerService DrawerService
+@inject IBrowserViewportService BrowserViewportService
 
 <div class="drawer-content">
     <MudIconButton Style="position: absolute; top: 8px; left: 8px;"
@@ -8,13 +10,54 @@
                    Color="Color.Primary"
                    OnClick="@OnCloseClicked" />
     <div class="logo-container">
-        <img class="logo" src="/Images/logo.png" />
+        <img class="logo" src="/Images/logo.png" alt="logo" />
+    </div>
+    <div class="menu-container">
+        <div class="container-title">Sections</div>
+        @foreach (var menuItem in MenuItems)
+        {
+            <MudButton Href="@menuItem.Href" 
+                       OnClick="HandleDrawerCloseOnNavigate">
+                @menuItem.Name
+            </MudButton>
+        }
     </div>
 </div>
 
 @code {
-    private async Task OnCloseClicked()
+    public List<MenuItem> MenuItems { get; set; } = new List<MenuItem>
+    {
+        new MenuItem
+        {
+            Href = "/",
+            Name = "Home"
+        },
+        new MenuItem
+        {
+            Href = "/Regional",
+            Name = "Regional"
+        }
+    };
+
+    public async Task OnCloseClicked()
     {
         await DrawerService.Close();
+    }
+
+    public async Task HandleDrawerCloseOnNavigate()
+    {
+        var breakpoint = await BrowserViewportService.GetCurrentBreakpointAsync();
+
+        if (breakpoint <= Breakpoint.Sm)
+        {
+            await DrawerService.Close();
+        }
+    }
+
+    public class MenuItem
+    {
+        public required string Href { get; set; }
+
+        public required string Name { get; set; }
     }
 }
