@@ -8,20 +8,22 @@
                    Size="Size.Small"
                    Variant="Variant.Filled"
                    Color="Color.Primary"
-                   OnClick="@OnCloseClicked" />
+                   OnClick="@OnCloseClicked"
+                   DisableElevation="true" />
     <div class="logo-container">
         <img class="logo" src="/Images/logo.png" alt="logo" />
     </div>
+    <Divider MarginTop="8px" MarginBottom="8px" />
     <div class="menu-container">
-        <div class="container-title">Sections</div>
         @foreach (var menuItem in MenuItems)
         {
-            <MudButton Href="@menuItem.Href" 
+            <MudButton Href="@menuItem.Href"
                        OnClick="HandleDrawerCloseOnNavigate">
                 @menuItem.Name
             </MudButton>
         }
     </div>
+    <Divider MarginTop="8px" MarginBottom="8px" />
 </div>
 
 @code {

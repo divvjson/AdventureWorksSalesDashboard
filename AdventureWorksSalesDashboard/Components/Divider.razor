@@ -1,0 +1,43 @@
+﻿<div style="@DividerStyle"></div>
+
+@code {
+    private string DividerStyle { get; set; } = $"background-color: whitesmoke;";
+
+    [Parameter]
+    public string MarginTop { get; set; } = "unset";
+
+    [Parameter]
+    public string MarginBottom { get; set; } = "unset";
+
+    [Parameter]
+    public string MarginLeft { get; set; } = "unset";
+
+    [Parameter]
+    public string MarginRight { get; set; } = "unset";
+
+    [Parameter]
+    public DividerOrientation Orientation { get; set; } = DividerOrientation.Horizontal;
+
+    protected override void OnParametersSet()
+    {
+        DividerStyle += $"margin-top: {MarginTop};";
+        DividerStyle += $"margin-bottom: {MarginBottom};";
+        DividerStyle += $"margin-left: {MarginLeft};";
+        DividerStyle += $"margin-right: {MarginRight};";
+
+        if (Orientation == DividerOrientation.Horizontal)
+        {
+            DividerStyle += "width: 100%; height: 1px;";
+        }
+        else
+        {
+            DividerStyle += "height: 100%; width: 1px;";
+        }
+    }
+
+    public enum DividerOrientation
+    {
+        Horizontal,
+        Vertical
+    }
+}
