@@ -1,52 +1,10 @@
 ﻿@page "/"
-@inject DrawerService DrawerService
 @inject IDbContextFactory<AdventureWorksContext> DbFactory
 
 <PageTitle>Home</PageTitle>
 
 <div class="home">
-    <MudIconButton Style="@GetButtonStyle()"
-                   Icon="@Icons.Material.Outlined.Menu"
-                   Size="Size.Small"
-                   Variant="Variant.Filled"
-                   Color="Color.Primary"
-                   OnClick="OpenDrawer" />
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
-    <h1>Home</h1>
+    <OpenDrawerFloatingButton Margin="8px" />
 </div>
 
 @code {
@@ -63,31 +21,4 @@
     //         FirstProductName = product.Name;
     //     }
     // }
-
-    private string GetButtonStyle()
-    {
-        bool isClosed = DrawerService.State == DrawerService.DrawerState.Closing || DrawerService.State == DrawerService.DrawerState.Closed;
-        string transitions = isClosed ? "opacity 225ms ease-in" : "none";
-        return $"position: fixed; margin: 8px; opacity: {(isClosed ? 1 : 0)}; transition: {transitions}; pointer-events: {(isClosed ? "auto" : "none")};";
-    }
-
-    protected override void OnInitialized()
-    {
-        DrawerService.OnChange += HandleDrawerStateChange;
-    }
-
-    private void HandleDrawerStateChange()
-    {
-        StateHasChanged();
-    }
-
-    private async Task OpenDrawer()
-    {
-        await DrawerService.Open();
-    }
-
-    public void Dispose()
-    {
-        DrawerService.OnChange -= HandleDrawerStateChange;
-    }
 }
