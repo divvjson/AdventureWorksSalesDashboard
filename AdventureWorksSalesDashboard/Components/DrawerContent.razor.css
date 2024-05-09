@@ -4,3 +4,16 @@
     flex-direction: column;
     position: relative;
 }
+
+.logo-container {
+    margin-top: 8px;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
