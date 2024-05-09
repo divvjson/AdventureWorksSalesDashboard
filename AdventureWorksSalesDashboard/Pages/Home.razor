@@ -5,15 +5,12 @@
 <PageTitle>Home</PageTitle>
 
 <div class="home">
-    @if (DrawerService.IsOpen is false)
-    {
-        <MudIconButton Style="position: fixed; margin: 8px;"
-                       Icon="@Icons.Material.Outlined.Menu"
-                       Size="Size.Small"
-                       Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       OnClick="OpenDrawer" />
-    }
+    <MudIconButton Style="@GetButtonStyle()"
+                   Icon="@Icons.Material.Outlined.Menu"
+                   Size="Size.Small"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="OpenDrawer" />
     <h1>Home</h1>
     <h1>Home</h1>
     <h1>Home</h1>
@@ -67,6 +64,13 @@
     //     }
     // }
 
+    private string GetButtonStyle()
+    {
+        bool isClosed = DrawerService.State == DrawerService.DrawerState.Closing || DrawerService.State == DrawerService.DrawerState.Closed;
+        string transitions = isClosed ? "opacity 225ms ease-in" : "none";
+        return $"position: fixed; margin: 8px; opacity: {(isClosed ? 1 : 0)}; transition: {transitions}; pointer-events: {(isClosed ? "auto" : "none")};";
+    }
+
     protected override void OnInitialized()
     {
         DrawerService.OnChange += HandleDrawerStateChange;
@@ -74,12 +78,12 @@
 
     private void HandleDrawerStateChange()
     {
-        InvokeAsync(StateHasChanged);
+        StateHasChanged();
     }
 
-    private void OpenDrawer()
+    private async Task OpenDrawer()
     {
-        DrawerService.Open();
+        await DrawerService.Open();
     }
 
     public void Dispose()

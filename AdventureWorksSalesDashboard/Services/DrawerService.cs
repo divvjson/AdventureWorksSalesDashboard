@@ -2,28 +2,44 @@
 {
     public class DrawerService
     {
-        private bool isOpen = true;
+        public enum DrawerState { Closed, Opening, Open, Closing }
+        private DrawerState state = DrawerState.Open;
 
         public event Action? OnChange;
 
         public bool IsOpen
         {
-            get => isOpen;
-            set
+            get => state == DrawerState.Open || state == DrawerState.Opening;
+        }
+
+        public DrawerState State
+        {
+            get => state;
+            private set
             {
-                isOpen = value;
+                state = value;
                 NotifyStateChanged();
             }
         }
 
-        public void Open()
+        public async Task Open()
         {
-            IsOpen = true;
+            if (state == DrawerState.Closed || state == DrawerState.Closing)
+            {
+                State = DrawerState.Opening;
+                await Task.Delay(225); // Wait for the animation time
+                State = DrawerState.Open;
+            }
         }
 
-        public void Close()
+        public async Task Close()
         {
-            IsOpen = false;
+            if (state == DrawerState.Open || state == DrawerState.Opening)
+            {
+                State = DrawerState.Closing;
+                await Task.Delay(225); // Wait for the animation time
+                State = DrawerState.Closed;
+            }
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();

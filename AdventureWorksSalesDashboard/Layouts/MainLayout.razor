@@ -6,7 +6,7 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudDrawer @bind-Open="@DrawerService.IsOpen" Elevation="1">
+    <MudDrawer Open="IsOpen" OpenChanged="HandleOpenChanged" Elevation="1">
         <DrawerContent />
     </MudDrawer>
     <MudMainContent>
@@ -15,13 +15,38 @@
 </MudLayout>
 
 @code {
+    public bool IsOpen { get; set; }
+
     protected override void OnInitialized()
     {
-        DrawerService.OnChange += StateHasChanged;
+        DrawerService.OnChange += UpdateDrawerState;
+        IsOpen = DrawerService.IsOpen;
+    }
+
+    private void UpdateDrawerState()
+    {
+        IsOpen = DrawerService.IsOpen;
+        StateHasChanged();
+    }
+
+    private async Task HandleOpenChanged(bool isOpen)
+    {
+        IsOpen = isOpen;
+
+        if (isOpen)
+        {
+            await DrawerService.Open();
+        }
+        else
+        {
+            await DrawerService.Close();
+        }
+
+        StateHasChanged();
     }
 
     public void Dispose()
     {
-        DrawerService.OnChange -= StateHasChanged;
+        DrawerService.OnChange -= UpdateDrawerState;
     }
 }
