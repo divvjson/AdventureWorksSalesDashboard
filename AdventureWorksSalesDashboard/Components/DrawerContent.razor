@@ -1,6 +1,6 @@
-﻿@using MudBlazor.Services
-@inject DrawerService DrawerService
+﻿@inject DrawerService DrawerService
 @inject IBrowserViewportService BrowserViewportService
+@inject NavigationManager NavigationManager
 
 <div class="drawer-content">
     <MudIconButton Style="position: absolute; top: 8px; left: 8px;"
@@ -24,6 +24,10 @@
         }
     </div>
     <Divider MarginTop="8px" MarginBottom="8px" />
+    @if (currentPage == "/Regional")
+    {
+        <RegionalFilter />
+    }
 </div>
 
 @code {
@@ -41,6 +45,15 @@
         }
     };
 
+    private string currentPage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+
+        currentPage = new Uri(NavigationManager.Uri).LocalPath;
+    }
+
     public async Task OnCloseClicked()
     {
         await DrawerService.Close();
@@ -54,6 +67,18 @@
         {
             await DrawerService.Close();
         }
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentPage = new Uri(e.Location).LocalPath;
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
     public class MenuItem
