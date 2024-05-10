@@ -1,7 +1,74 @@
 ﻿@inherits LayoutComponentBase
+@inject DrawerService DrawerService
 
-<MudThemeProvider />
+<MudThemeProvider Theme="MudTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-@Body
+<CascadingValue Value="MudTheme">
+    <MudLayout>
+        <MudDrawer Open="IsOpen" OpenChanged="HandleOpenChanged" Elevation="1">
+            <DrawerContent />
+        </MudDrawer>
+        <MudMainContent>
+            <OpenDrawerFloatingButton Margin="8px" />
+            @Body
+        </MudMainContent>
+    </MudLayout>
+</CascadingValue>
+
+@code {
+    public MudTheme MudTheme { get; set; } = new()
+    {
+        Palette = new PaletteLight
+        {
+            Primary = "#04363A"
+        },
+        Typography = new Typography
+        {
+            Default = new Default
+            {
+                FontFamily = new[]
+                {
+                    "Poppins",
+                    "sans-serif"
+                }
+            }
+        }
+    };
+
+    public bool IsOpen { get; set; }
+
+    protected override void OnInitialized()
+    {
+        DrawerService.OnChange += UpdateDrawerState;
+        IsOpen = DrawerService.IsOpen;
+    }
+
+    private void UpdateDrawerState()
+    {
+        IsOpen = DrawerService.IsOpen;
+        StateHasChanged();
+    }
+
+    private async Task HandleOpenChanged(bool isOpen)
+    {
+        IsOpen = isOpen;
+
+        if (isOpen)
+        {
+            await DrawerService.Open();
+        }
+        else
+        {
+            await DrawerService.Close();
+        }
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        DrawerService.OnChange -= UpdateDrawerState;
+    }
+}

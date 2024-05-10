@@ -3,35 +3,22 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-First Product: @FirstProductName
-
-Current count: @CurrentCount
-
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Increment">Increment</MudButton>
+<div class="home">
+    <OpenDrawerFloatingButton Margin="8px" />
+</div>
 
 @code {
-    public int CurrentCount { get; set; }
+    // public string FirstProductName { get; set; } = string.Empty;
 
-    public string FirstProductName { get; set; } = string.Empty;
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var context = DbFactory.CreateDbContext();
 
-    protected override async Task OnInitializedAsync()
-    {
-        var context = DbFactory.CreateDbContext();
+    //     var product = await context.Products.FirstOrDefaultAsync();
 
-        var product = await context.Products.FirstOrDefaultAsync();
-
-        if (product is not null)
-        {
-            FirstProductName = product.Name;
-        }
-    }
-
-    private void Increment()
-    {
-        CurrentCount++;
-    }
+    //     if (product is not null)
+    //     {
+    //         FirstProductName = product.Name;
+    //     }
+    // }
 }

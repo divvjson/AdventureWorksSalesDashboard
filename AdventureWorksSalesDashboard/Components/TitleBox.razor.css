@@ -1,0 +1,16 @@
+﻿.title-box {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+    color: white;
+
+    padding: 8px;
+
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}

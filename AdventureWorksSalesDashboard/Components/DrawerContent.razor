@@ -1,0 +1,91 @@
+﻿@inject DrawerService DrawerService
+@inject IBrowserViewportService BrowserViewportService
+@inject NavigationManager NavigationManager
+
+<div class="drawer-content">
+    <MudIconButton Style="position: absolute; top: 8px; left: 8px;"
+                   Icon="@Icons.Material.Outlined.Close"
+                   Size="Size.Small"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="@OnCloseClicked"
+                   DisableElevation="true" />
+    <div class="logo-container">
+        <img class="logo" src="/Images/logo.png" alt="logo" />
+    </div>
+    <Divider MarginTop="8px" MarginBottom="8px" />
+    <div class="menu-container">
+        @foreach (var menuItem in MenuItems)
+        {
+            <MudButton Href="@menuItem.Href"
+                       OnClick="HandleDrawerCloseOnNavigate"
+                       Class="@(currentPage == menuItem.Href ? "menu-item--active" : "")">
+                @menuItem.Name
+            </MudButton>
+        }
+    </div>
+    <Divider MarginTop="8px" MarginBottom="8px" />
+    @if (currentPage == "/Regional")
+    {
+        <RegionalFilter />
+    }
+</div>
+
+@code {
+    public List<MenuItem> MenuItems { get; set; } = new List<MenuItem>
+    {
+        new MenuItem
+        {
+            Href = "/",
+            Name = "Home"
+        },
+        new MenuItem
+        {
+            Href = "/Regional",
+            Name = "Regional"
+        }
+    };
+
+    private string currentPage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+
+        currentPage = new Uri(NavigationManager.Uri).LocalPath;
+    }
+
+    public async Task OnCloseClicked()
+    {
+        await DrawerService.Close();
+    }
+
+    public async Task HandleDrawerCloseOnNavigate()
+    {
+        var breakpoint = await BrowserViewportService.GetCurrentBreakpointAsync();
+
+        if (breakpoint <= Breakpoint.Sm)
+        {
+            await DrawerService.Close();
+        }
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentPage = new Uri(e.Location).LocalPath;
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    public class MenuItem
+    {
+        public required string Href { get; set; }
+
+        public required string Name { get; set; }
+    }
+}
