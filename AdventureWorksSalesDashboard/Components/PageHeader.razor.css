@@ -1,0 +1,9 @@
+﻿.page-header {
+    flex-grow: 1;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+}
