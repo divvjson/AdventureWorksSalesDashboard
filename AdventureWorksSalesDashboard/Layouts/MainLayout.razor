@@ -1,20 +1,31 @@
 ﻿@inherits LayoutComponentBase
 @inject DrawerService DrawerService
 
-<MudThemeProvider />
+<MudThemeProvider Theme="MudTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
-    <MudDrawer Open="IsOpen" OpenChanged="HandleOpenChanged" Elevation="1">
-        <DrawerContent />
-    </MudDrawer>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
-</MudLayout>
+<CascadingValue Value="MudTheme">
+    <MudLayout>
+        <MudDrawer Open="IsOpen" OpenChanged="HandleOpenChanged" Elevation="1">
+            <DrawerContent />
+        </MudDrawer>
+        <MudMainContent>
+            <OpenDrawerFloatingButton Margin="8px" />
+            @Body
+        </MudMainContent>
+    </MudLayout>
+</CascadingValue>
 
 @code {
+    public MudTheme MudTheme { get; set; } = new()
+    {
+        Palette = new PaletteLight
+        {
+            Primary = "#04363A"
+        }
+    };
+
     public bool IsOpen { get; set; }
 
     protected override void OnInitialized()
