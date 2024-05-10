@@ -21,9 +21,11 @@
 .page-box-header--small {
     height: 20px;
     font-size: 12px;
+    background-color: var(--mud-palette-primary-lighten);
 }
 
 .page-box-header--medium {
     height: 30px;
     font-size: 13px;
+    background-color: var(--mud-palette-primary);
 }

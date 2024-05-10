@@ -1,5 +1,5 @@
 ﻿<div class="page-box">
-    <div class="@GetPageBoxHeaderClass()" style="background-color: @MudTheme.Palette.Primary;">
+    <div class="@GetPageBoxHeaderClass()">
         @Title
     </div>
     @ChildContent
@@ -15,9 +15,6 @@
 
     [Parameter]
     public required RenderFragment ChildContent { get; set; }
-
-    [CascadingParameter]
-    public required MudTheme MudTheme { get; set; }
 
     public string GetPageBoxHeaderClass()
     {

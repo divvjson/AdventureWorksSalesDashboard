@@ -1,0 +1,28 @@
+﻿.internet-vs-reseller {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+}
+
+@media (min-width: 0px) {
+    .internet-vs-reseller {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 600px) {
+
+}
+
+@media (min-width: 960px) {
+
+}
+
+@media (min-width: 1280px) {
+    .internet-vs-reseller {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media (min-width: 1920px) {
+}
