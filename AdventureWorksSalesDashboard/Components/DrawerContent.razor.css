@@ -24,3 +24,12 @@
     padding: 8px;
     row-gap: 8px;
 }
+
+::deep .menu-item--active {
+    background-color: var(--mud-palette-primary-lighten);
+    color: white;
+}
+
+::deep .menu-item--active:hover {
+    background-color: var(--mud-palette-primary);
+}

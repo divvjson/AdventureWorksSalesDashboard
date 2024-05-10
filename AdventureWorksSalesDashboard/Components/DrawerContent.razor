@@ -18,7 +18,8 @@
         @foreach (var menuItem in MenuItems)
         {
             <MudButton Href="@menuItem.Href"
-                       OnClick="HandleDrawerCloseOnNavigate">
+                       OnClick="HandleDrawerCloseOnNavigate"
+                       Class="@(currentPage == menuItem.Href ? "menu-item--active" : "")">
                 @menuItem.Name
             </MudButton>
         }
