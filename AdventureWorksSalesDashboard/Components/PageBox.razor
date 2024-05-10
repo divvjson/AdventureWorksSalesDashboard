@@ -1,0 +1,43 @@
+﻿<div class="page-box">
+    <div class="@GetPageBoxHeaderClass()" style="background-color: @MudTheme.Palette.Primary;">
+        @Title
+    </div>
+    @ChildContent
+</div>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public required string Title { get; set; }
+
+    [Parameter]
+    public PageBoxSize Size { get; set; } = PageBoxSize.Medium;
+
+    [Parameter]
+    public required RenderFragment ChildContent { get; set; }
+
+    [CascadingParameter]
+    public required MudTheme MudTheme { get; set; }
+
+    public string GetPageBoxHeaderClass()
+    {
+        var classString = "page-box-header";
+
+        if (Size is PageBoxSize.Small)
+        {
+            classString += " page-box-header--small";
+        }
+        else if (Size is PageBoxSize.Medium)
+        {
+            classString += " page-box-header--medium";
+        }
+
+        return classString;
+    }
+
+    public enum PageBoxSize
+    {
+        Small,
+        Medium
+    }
+}
