@@ -1,5 +1,89 @@
 ﻿.regional {
     flex-grow: 1;
     display: flex;
-    padding: 8px;
+    flex-direction: column;
+    background-color: var(--gray-50);
+}
+
+.grid {
+    display: grid;
+    gap: 8px;
+    margin: 8px;
+}
+
+.total-sales {
+    grid-area: total-sales;
+}
+
+.total-cost {
+    grid-area: total-cost;
+}
+
+.gross-profit {
+    grid-area: gross-profit;
+}
+
+.gross-margin {
+    grid-area: gross-margin;
+}
+
+.sales-trend-top-3-countries {
+    grid-area: sales-trend-top-3-countries;
+}
+
+.internet-vs-reseller {
+    grid-area: internet-vs-reseller;
+}
+
+.distribution-of-sales {
+    grid-area: distribution-of-sales;
+}
+
+.top-3-states {
+    grid-area: top-3-states;
+}
+
+.top-3-cities {
+    grid-area: top-3-cities;
+}
+
+.summary-matrix {
+    grid-area: summary-matrix;
+}
+
+@media (min-width: 0px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "total-sales total-cost"
+            "gross-profit gross-margin"
+            "sales-trend-top-3-countries sales-trend-top-3-countries"
+            "internet-vs-reseller internet-vs-reseller"
+            "distribution-of-sales distribution-of-sales"
+            "top-3-states top-3-cities"
+            "summary-matrix summary-matrix";
+    }
+}
+
+@media (min-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-areas:
+            "total-sales total-cost gross-profit gross-margin"
+            "sales-trend-top-3-countries sales-trend-top-3-countries internet-vs-reseller internet-vs-reseller"
+            "distribution-of-sales distribution-of-sales distribution-of-sales distribution-of-sales"
+            "top-3-states top-3-cities summary-matrix summary-matrix";
+    }
+}
+
+@media (min-width: 960px) {
+    .grid {
+        margin: 32px;
+    }
+}
+
+@media (min-width: 1280px) {
+}
+
+@media (min-width: 1920px) {
 }

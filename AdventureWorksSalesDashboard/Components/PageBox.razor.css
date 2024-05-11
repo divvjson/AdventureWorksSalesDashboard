@@ -1,0 +1,31 @@
+﻿.page-box {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    border: 1px solid var(--gray-300);
+    background-color: white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    overflow: hidden;
+}
+
+.page-box-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 8px;
+    font-weight: 500;
+}
+
+.page-box-header--small {
+    height: 20px;
+    font-size: 11px;
+    background-color: var(--mud-palette-primary-lighten);
+}
+
+.page-box-header--medium {
+    height: 30px;
+    font-size: 13px;
+    background-color: var(--mud-palette-primary);
+}
