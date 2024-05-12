@@ -1,10 +1,12 @@
-﻿<MudDialog>
-    <DialogContent>
-        <MudDatePicker @bind-Date="SelectedDate"
-                       PickerVariant="PickerVariant.Static"
-                       DisableToolbar="true" />
-    </DialogContent>
-    <DialogActions>
+﻿<div class="date-picker-dialog">
+    @if (Title is not null)
+    {
+        <div style="font-weight: 500">@Title</div>
+    }
+    <MudDatePicker @bind-Date="SelectedDate"
+                   PickerVariant="PickerVariant.Static"
+                   DisableToolbar="true" />
+    <div class="action-buttons">
         <MudButton OnClick="Submit"
                    Variant="Variant.Filled"
                    DisableElevation="true"
@@ -16,12 +18,15 @@
                    DisableElevation="true">
             Cancel
         </MudButton>
-    </DialogActions>
-</MudDialog>
+    </div>
+</div>
 
 @code {
     [CascadingParameter] 
     public MudDialogInstance? MudDialog { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
 
     [Parameter]
     public DateTime? SelectedDate { get; set; }

@@ -35,19 +35,24 @@
 
     public DateTime? ToDate { get; set; }
 
+    [Parameter]
+    public EventCallback<DateTime?> OnFromDateChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime?> OnToDateChanged { get; set; }
+
     public async Task ShowDatePickerDialog(DateRangePickerSelection selection)
     {
-        var dialogTitle = string.Empty;
         var parameters = new DialogParameters();
 
         if (selection == DateRangePickerSelection.From)
         {
-            dialogTitle = "From date";
+            parameters.Add("Title", "From date");
             parameters.Add("SelectedDate", FromDate);
         }
         else if (selection == DateRangePickerSelection.To)
         {
-            dialogTitle = "To date";
+            parameters.Add("Title", "To date");
             parameters.Add("SelectedDate", ToDate);
         }
 
@@ -57,7 +62,7 @@
             DisableBackdropClick = true
         };
 
-        var dialog = DialogService.Show<DatePickerDialog>(dialogTitle, parameters, options);
+        var dialog = DialogService.Show<DatePickerDialog>(null, parameters, options);
         var result = await dialog.Result;
 
         if (result.Canceled)
@@ -73,10 +78,24 @@
         if (selection == DateRangePickerSelection.From)
         {
             FromDate = selectedDate;
+            await OnFromDateChanged.InvokeAsync(FromDate);
+
+            if (FromDate > ToDate)
+            {
+                ToDate = FromDate;
+                await OnToDateChanged.InvokeAsync(ToDate);
+            }
         }
         else if (selection == DateRangePickerSelection.To)
         {
-            ToDate = selectedDate;
+            ToDate = selectedDate.Date.AddTicks(TimeSpan.TicksPerDay - 1);
+            await OnToDateChanged.InvokeAsync(ToDate);
+
+            if (ToDate < FromDate)
+            {
+                FromDate = ToDate;
+                await OnFromDateChanged.InvokeAsync(FromDate);
+            }
         }
     }
 

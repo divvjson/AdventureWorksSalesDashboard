@@ -1,0 +1,11 @@
+﻿.date-picker-dialog {
+    display: flex;
+    flex-direction: column;
+    padding: 23px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 8px;
+}
