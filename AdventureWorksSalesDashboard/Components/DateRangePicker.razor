@@ -1,0 +1,88 @@
+﻿@inject IDialogService DialogService
+
+<div class="date-range-picker">
+    <MudButton OnClick="() => ShowDatePickerDialog(DateRangePickerSelection.From)"
+               Variant="Variant.Filled"
+               DisableElevation="true"
+               Style="font-size: 11px; height: 36.5px;">
+        @if (FromDate is not null)
+        {
+            @FromDate.Value.ToShortDateString();
+        }
+        else
+        {
+            <div>From</div>
+        }
+    </MudButton>
+    <div class="dash">-</div>
+    <MudButton OnClick="() => ShowDatePickerDialog(DateRangePickerSelection.To)"
+               Variant="Variant.Filled"
+               DisableElevation="true"
+               Style="font-size: 11px; height: 36.5px;">
+        @if (ToDate is not null)
+        {
+            @ToDate.Value.ToShortDateString();
+        }
+        else
+        {
+            <div>To</div>
+        }
+    </MudButton>
+</div>
+
+@code {
+    public DateTime? FromDate { get; set; }
+
+    public DateTime? ToDate { get; set; }
+
+    public async Task ShowDatePickerDialog(DateRangePickerSelection selection)
+    {
+        var dialogTitle = string.Empty;
+        var parameters = new DialogParameters();
+
+        if (selection == DateRangePickerSelection.From)
+        {
+            dialogTitle = "From date";
+            parameters.Add("SelectedDate", FromDate);
+        }
+        else if (selection == DateRangePickerSelection.To)
+        {
+            dialogTitle = "To date";
+            parameters.Add("SelectedDate", ToDate);
+        }
+
+        var options = new DialogOptions
+        { 
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = true
+        };
+
+        var dialog = DialogService.Show<DatePickerDialog>(dialogTitle, parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+        {
+            return;
+        }
+
+        if (result.Data is not DateTime selectedDate)
+        {
+            return;
+        }
+
+        if (selection == DateRangePickerSelection.From)
+        {
+            FromDate = selectedDate;
+        }
+        else if (selection == DateRangePickerSelection.To)
+        {
+            ToDate = selectedDate;
+        }
+    }
+
+    public enum DateRangePickerSelection
+    {
+        From,
+        To
+    }
+}
