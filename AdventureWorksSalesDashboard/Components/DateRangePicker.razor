@@ -4,7 +4,7 @@
     <MudButton OnClick="() => ShowDatePickerDialog(DateRangePickerSelection.From)"
                Variant="Variant.Filled"
                DisableElevation="true"
-               Style="font-size: 11px; height: 36.5px;">
+               Style="font-size: 11px; height: 36.5px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; padding-left: 4px; padding-right: 4px;">
         @if (FromDate is not null)
         {
             @FromDate.Value.ToShortDateString();
@@ -14,11 +14,17 @@
             <div>From</div>
         }
     </MudButton>
+    <MudIconButton Icon="@Icons.Material.Filled.Close"
+                   OnClick="() => FromDate = null"
+                   Variant="Variant.Filled" 
+                   DisableElevation="true"
+                   Size="Size.Small"
+                   Style="height: 36.5px; border-top-left-radius: 0px; border-bottom-left-radius: 0px; padding-left: 4px; padding-right: 4px;" />
     <div class="dash">-</div>
     <MudButton OnClick="() => ShowDatePickerDialog(DateRangePickerSelection.To)"
                Variant="Variant.Filled"
                DisableElevation="true"
-               Style="font-size: 11px; height: 36.5px;">
+               Style="font-size: 11px; height: 36.5px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; padding-left: 4px; padding-right: 4px;">
         @if (ToDate is not null)
         {
             @ToDate.Value.ToShortDateString();
@@ -28,6 +34,12 @@
             <div>To</div>
         }
     </MudButton>
+    <MudIconButton Icon="@Icons.Material.Filled.Close"
+                   OnClick="() => ToDate = null"
+                   Variant="Variant.Filled"
+                   DisableElevation="true"
+                   Size="Size.Small"
+                   Style="height: 36.5px; border-top-left-radius: 0px; border-bottom-left-radius: 0px; padding-left: 4px; padding-right: 4px;" />
 </div>
 
 @code {
