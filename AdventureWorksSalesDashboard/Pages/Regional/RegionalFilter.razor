@@ -6,9 +6,11 @@
                    Variant="Variant.Filled"
                    Style="margin-top: 6px;" /> *@
 
-    <DateRangePicker />
+    <DateRangePicker FromDate="FromDate" ToDate="ToDate" />
 </div>
 
 @code {
+    public DateTime? FromDate { get; set; }
 
+    public DateTime? ToDate { get; set; }
 }

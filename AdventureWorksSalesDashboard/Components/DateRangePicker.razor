@@ -16,7 +16,8 @@
     </MudButton>
     <MudIconButton Icon="@Icons.Material.Filled.Close"
                    OnClick="() => FromDate = null"
-                   Variant="Variant.Filled" 
+                   Disabled="FromDate is null"
+                   Variant="Variant.Filled"
                    DisableElevation="true"
                    Size="Size.Small"
                    Style="height: 36.5px; border-top-left-radius: 0px; border-bottom-left-radius: 0px; padding-left: 4px; padding-right: 4px;" />
@@ -36,6 +37,7 @@
     </MudButton>
     <MudIconButton Icon="@Icons.Material.Filled.Close"
                    OnClick="() => ToDate = null"
+                   Disabled="ToDate is null"
                    Variant="Variant.Filled"
                    DisableElevation="true"
                    Size="Size.Small"
@@ -43,8 +45,12 @@
 </div>
 
 @code {
+    [EditorRequired]
+    [Parameter]
     public DateTime? FromDate { get; set; }
 
+    [EditorRequired]
+    [Parameter]
     public DateTime? ToDate { get; set; }
 
     [Parameter]
