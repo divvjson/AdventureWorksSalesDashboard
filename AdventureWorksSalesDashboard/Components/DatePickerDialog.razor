@@ -4,6 +4,9 @@
         <div style="font-weight: 500">@Title</div>
     }
     <MudDatePicker @bind-Date="SelectedDate"
+                   @ref="DatePickerRef"
+                   MinDate="MinDate"
+                   MaxDate="MaxDate"
                    PickerVariant="PickerVariant.Static"
                    DisableToolbar="true" />
     <div class="action-buttons">
@@ -23,6 +26,8 @@
 </div>
 
 @code {
+    public MudDatePicker? DatePickerRef { get; set; }
+
     [CascadingParameter] 
     public MudDialogInstance? MudDialog { get; set; }
 
@@ -30,7 +35,21 @@
     public string? Title { get; set; }
 
     [Parameter]
+    public DateTime? MinDate { get; set; }
+
+    [Parameter]
+    public DateTime? MaxDate { get; set; }
+
+    [Parameter]
     public DateTime? SelectedDate { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            DatePickerRef?.GoToDate(SelectedDate ?? DateTime.Now.Date);
+        }
+    }
 
     public void Submit()
     {

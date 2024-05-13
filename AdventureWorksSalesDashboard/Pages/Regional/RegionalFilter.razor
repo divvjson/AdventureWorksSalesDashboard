@@ -1,4 +1,6 @@
-﻿<div class="regional-filter">
+﻿@inject IDbContextFactory<AdventureWorksContext> DbFactory
+
+<div class="regional-filter">
 @*     <MudDatePicker Label="From" 
                    DisableToolbar="true"
                    PickerVariant="PickerVariant.Dialog"
@@ -6,11 +8,30 @@
                    Variant="Variant.Filled"
                    Style="margin-top: 6px;" /> *@
 
-    <DateRangePicker FromDate="FromDate" ToDate="ToDate" />
+    <DateRangePicker FromDate="FromDate" 
+                     ToDate="ToDate"
+                     MinDate="MinDate"
+                     MaxDate="MaxDate" />
 </div>
 
 @code {
     public DateTime? FromDate { get; set; }
 
     public DateTime? ToDate { get; set; }
+
+    public DateTime? MinDate { get; set; }
+
+    public DateTime? MaxDate { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var context = DbFactory.CreateDbContext();
+
+        var query = context.SalesOrderHeaders
+            .Where(salesOrderHeader => salesOrderHeader.Status != 6 && salesOrderHeader.Status != 4)
+            .Select(salesOrderHeader => salesOrderHeader.OrderDate);
+
+        MinDate = await query.MinAsync();
+        MaxDate = await query.MaxAsync();
+    }
 }

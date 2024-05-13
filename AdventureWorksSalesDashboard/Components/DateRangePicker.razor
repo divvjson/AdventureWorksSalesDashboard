@@ -54,6 +54,12 @@
     public DateTime? ToDate { get; set; }
 
     [Parameter]
+    public DateTime? MinDate { get; set; }
+
+    [Parameter]
+    public DateTime? MaxDate { get; set; }
+
+    [Parameter]
     public EventCallback<DateTime?> OnFromDateChanged { get; set; }
 
     [Parameter]
@@ -63,15 +69,18 @@
     {
         var parameters = new DialogParameters();
 
+        parameters.Add(nameof(DatePickerDialog.MinDate), MinDate);
+        parameters.Add(nameof(DatePickerDialog.MaxDate), MaxDate);
+
         if (selection == DateRangePickerSelection.From)
         {
-            parameters.Add("Title", "From date");
-            parameters.Add("SelectedDate", FromDate);
+            parameters.Add(nameof(DatePickerDialog.Title), "From date");
+            parameters.Add(nameof(DatePickerDialog.SelectedDate), FromDate ?? MinDate);
         }
         else if (selection == DateRangePickerSelection.To)
         {
-            parameters.Add("Title", "To date");
-            parameters.Add("SelectedDate", ToDate);
+            parameters.Add(nameof(DatePickerDialog.Title), "To date");
+            parameters.Add(nameof(DatePickerDialog.SelectedDate), ToDate ?? MaxDate);
         }
 
         var options = new DialogOptions
