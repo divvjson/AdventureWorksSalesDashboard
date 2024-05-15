@@ -1,0 +1,15 @@
+﻿@typeparam TItem
+
+<div class="item-picker-dialog">
+
+</div>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public required IEnumerable<TItem> Items { get; set; }
+
+    private List<TItem> SelectedItems { get; set; } = new List<TItem>();
+
+
+}
