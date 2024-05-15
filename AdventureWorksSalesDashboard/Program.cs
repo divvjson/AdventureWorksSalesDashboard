@@ -26,6 +26,7 @@ builder.Services
 
 builder.Services.AddMudServices();
 builder.Services.AddScoped<DrawerService>();
+builder.Services.AddScoped<LocalStorageService>();
 
 var app = builder.Build();
 
