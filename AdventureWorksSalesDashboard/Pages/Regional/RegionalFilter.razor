@@ -18,9 +18,13 @@
 </div>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await RegionalFilterService.Initialize();
+        if (firstRender)
+        {
+            await RegionalFilterService.Initialize();
+            StateHasChanged();
+        }
     }
 
     private async Task HandleFromDateChanged(DateTime? newFromDate)
