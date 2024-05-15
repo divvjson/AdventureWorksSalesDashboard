@@ -11,23 +11,37 @@
                    OnClick="@OnCloseClicked"
                    DisableElevation="true" />
     <div class="logo-container">
-        <img class="logo" src="/Images/logo.png" alt="logo" />
+        <a class="logo-link" href="/" @onclick="HandleDrawerCloseOnNavigate">
+            <img class="logo" src="/Images/logo.png" alt="logo" />
+        </a>
     </div>
-    <Divider MarginTop="8px" MarginBottom="8px" />
+    <Divider />
     <div class="menu-container">
+        <div class="drawer-section-title">
+            Analysis
+        </div>
         @foreach (var menuItem in MenuItems)
         {
             <MudButton Href="@menuItem.Href"
                        OnClick="HandleDrawerCloseOnNavigate"
-                       Class="@(currentPage == menuItem.Href ? "menu-item--active" : "")">
+                       Class="@(currentPage == menuItem.Href ? "menu-item--active" : "")"
+                       Style="margin-top: 8px;">
                 @menuItem.Name
             </MudButton>
         }
     </div>
-    <Divider MarginTop="8px" MarginBottom="8px" />
-    @if (currentPage == "/Regional")
+    <Divider />
+    @if (MenuItems.Any(menuItem => menuItem.Href == currentPage))
     {
-        <RegionalFilter />
+        <div class="filter-container">
+            <div class="drawer-section-title">
+                Filter
+            </div>
+            @if (currentPage == "/Regional")
+            {
+                <RegionalFilter />
+            }
+        </div>
     }
 </div>
 
@@ -36,13 +50,18 @@
     {
         new MenuItem
         {
-            Href = "/",
-            Name = "Home"
+            Href = "/Regional",
+            Name = "Regional"
         },
         new MenuItem
         {
-            Href = "/Regional",
-            Name = "Regional"
+            Href = "/Product",
+            Name = "Product"
+        },
+        new MenuItem
+        {
+            Href = "/Customer",
+            Name = "Customer"
         }
     };
 

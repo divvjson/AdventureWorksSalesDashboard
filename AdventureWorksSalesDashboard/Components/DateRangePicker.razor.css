@@ -1,0 +1,12 @@
+﻿.date-range-picker {
+    height: 36.5px;
+    margin-top: 6px;
+    display: grid;
+    grid-template-columns: 1fr min-content min-content 1fr min-content;
+    align-items: center;
+}
+
+.dash {
+    margin-left: 1px;
+    margin-right: 1px;
+}

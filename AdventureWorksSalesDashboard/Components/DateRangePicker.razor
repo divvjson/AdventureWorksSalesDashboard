@@ -1,0 +1,146 @@
+﻿@inject IDialogService DialogService
+
+<div class="date-range-picker">
+    <MudButton OnClick="() => ShowDatePickerDialog(DateRangePickerSelection.From)"
+               Variant="Variant.Filled"
+               DisableElevation="true"
+               Style="font-size: 11px; height: 36.5px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; padding-left: 4px; padding-right: 4px;">
+        @if (FromDate is not null)
+        {
+            @FromDate.Value.ToShortDateString();
+        }
+        else
+        {
+            <div>From</div>
+        }
+    </MudButton>
+    <MudIconButton Icon="@Icons.Material.Filled.Close"
+                   OnClick="HandleFromDateCleared"
+                   Disabled="FromDate is null"
+                   Variant="Variant.Filled"
+                   DisableElevation="true"
+                   Size="Size.Small"
+                   Style="height: 36.5px; border-top-left-radius: 0px; border-bottom-left-radius: 0px; padding-left: 4px; padding-right: 4px;" />
+    <div class="dash">-</div>
+    <MudButton OnClick="() => ShowDatePickerDialog(DateRangePickerSelection.To)"
+               Variant="Variant.Filled"
+               DisableElevation="true"
+               Style="font-size: 11px; height: 36.5px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; padding-left: 4px; padding-right: 4px;">
+        @if (ToDate is not null)
+        {
+            @ToDate.Value.ToShortDateString();
+        }
+        else
+        {
+            <div>To</div>
+        }
+    </MudButton>
+    <MudIconButton Icon="@Icons.Material.Filled.Close"
+                   OnClick="HandleToDateCleared"
+                   Disabled="ToDate is null"
+                   Variant="Variant.Filled"
+                   DisableElevation="true"
+                   Size="Size.Small"
+                   Style="height: 36.5px; border-top-left-radius: 0px; border-bottom-left-radius: 0px; padding-left: 4px; padding-right: 4px;" />
+</div>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public DateTime? FromDate { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public DateTime? ToDate { get; set; }
+
+    [Parameter]
+    public DateTime? MinDate { get; set; }
+
+    [Parameter]
+    public DateTime? MaxDate { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime?> OnFromDateChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime?> OnToDateChanged { get; set; }
+
+    public async Task ShowDatePickerDialog(DateRangePickerSelection selection)
+    {
+        var parameters = new DialogParameters();
+
+        parameters.Add(nameof(DatePickerDialog.MinDate), MinDate);
+        parameters.Add(nameof(DatePickerDialog.MaxDate), MaxDate);
+
+        if (selection == DateRangePickerSelection.From)
+        {
+            parameters.Add(nameof(DatePickerDialog.Title), "From date");
+            parameters.Add(nameof(DatePickerDialog.SelectedDate), FromDate ?? MinDate);
+        }
+        else if (selection == DateRangePickerSelection.To)
+        {
+            parameters.Add(nameof(DatePickerDialog.Title), "To date");
+            parameters.Add(nameof(DatePickerDialog.SelectedDate), ToDate ?? MaxDate);
+        }
+
+        var options = new DialogOptions
+        { 
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = true
+        };
+
+        var dialog = DialogService.Show<DatePickerDialog>(null, parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+        {
+            return;
+        }
+
+        if (result.Data is not DateTime selectedDate)
+        {
+            return;
+        }
+
+        if (selection == DateRangePickerSelection.From)
+        {
+            FromDate = selectedDate;
+            await OnFromDateChanged.InvokeAsync(FromDate);
+
+            if (FromDate > ToDate)
+            {
+                ToDate = FromDate;
+                await OnToDateChanged.InvokeAsync(ToDate);
+            }
+        }
+        else if (selection == DateRangePickerSelection.To)
+        {
+            ToDate = selectedDate.Date.AddTicks(TimeSpan.TicksPerDay - 1);
+            await OnToDateChanged.InvokeAsync(ToDate);
+
+            if (ToDate < FromDate)
+            {
+                FromDate = ToDate;
+                await OnFromDateChanged.InvokeAsync(FromDate);
+            }
+        }
+    }
+
+    public async Task HandleFromDateCleared()
+    {
+        FromDate = null;
+        await OnFromDateChanged.InvokeAsync(null);
+    }
+
+    public async Task HandleToDateCleared()
+    {
+        ToDate = null;
+        await OnToDateChanged.InvokeAsync(null);
+    }
+
+    public enum DateRangePickerSelection
+    {
+        From,
+        To
+    }
+}

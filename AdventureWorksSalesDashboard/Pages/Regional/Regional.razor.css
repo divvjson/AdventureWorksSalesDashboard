@@ -5,6 +5,22 @@
     background-color: var(--gray-50);
 }
 
+.regional-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.header {
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+    font-weight: 600;
+}
+
 .grid {
     display: grid;
     gap: 8px;
@@ -52,6 +68,12 @@
 }
 
 @media (min-width: 0px) {
+    .regional-container {
+        border: unset;
+        border-radius: unset;
+        margin: unset;
+    }
+
     .grid {
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
@@ -66,6 +88,12 @@
 }
 
 @media (min-width: 600px) {
+    .regional-container {
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        margin: calc(8px + 15px);
+    }
+
     .grid {
         grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-template-areas:
@@ -78,7 +106,7 @@
 
 @media (min-width: 960px) {
     .grid {
-        margin: 32px;
+        margin: calc(8px + 15px);
     }
 }
 

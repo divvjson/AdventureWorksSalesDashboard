@@ -1,5 +1,40 @@
-﻿<div>Regional</div>
+﻿@inject IDbContextFactory<AdventureWorksContext> DbFactory
+@inject RegionalFilterService RegionalFilterService
+
+<div class="regional-filter">
+    <DateRangePicker FromDate="RegionalFilterService.RegionalFilterState.FromDate"
+                     ToDate="RegionalFilterService.RegionalFilterState.ToDate"
+                     MinDate="RegionalFilterService.RegionalFilterState.MinDate"
+                     MaxDate="RegionalFilterService.RegionalFilterState.MaxDate"
+                     OnFromDateChanged="(newFromDate) => HandleFromDateChanged(newFromDate)"
+                     OnToDateChanged="(newToDate) => HandleToDateChanged(newToDate)" />
+    <MudButton Variant="Variant.Filled"
+               DisableElevation="true"
+               Style="margin-top: 12px;"
+               OnClick="RegionalFilterService.Reset">
+        Reset
+    </MudButton>
+</div>
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await RegionalFilterService.Initialize();
+            StateHasChanged();
+        }
+    }
 
+    private async Task HandleFromDateChanged(DateTime? newFromDate)
+    {
+        RegionalFilterService.RegionalFilterState.FromDate = newFromDate;
+        await RegionalFilterService.Update();
+    }
+
+    private async Task HandleToDateChanged(DateTime? newToDate)
+    {
+        RegionalFilterService.RegionalFilterState.ToDate = newToDate;
+        await RegionalFilterService.Update();
+    }
 }

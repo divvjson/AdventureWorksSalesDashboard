@@ -1,5 +1,6 @@
 using AdventureWorksSalesDashboard;
 using AdventureWorksSalesDashboard.Entities;
+using AdventureWorksSalesDashboard.Pages.Regional;
 using AdventureWorksSalesDashboard.Services;
 using AdventureWorksSalesDashboard.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -21,11 +22,16 @@ builder.Services.AddDbContextFactory<AdventureWorksContext>(options =>
 });
 
 builder.Services
-    .AddRazorComponents()
+    .AddRazorComponents(options =>
+    {
+        options.DetailedErrors = builder.Environment.IsDevelopment();
+    })
     .AddInteractiveServerComponents();
 
 builder.Services.AddMudServices();
 builder.Services.AddScoped<DrawerService>();
+builder.Services.AddScoped<LocalStorageService>();
+builder.Services.AddScoped<RegionalFilterService>();
 
 var app = builder.Build();
 
@@ -47,6 +53,7 @@ app
 if (app.Environment.IsDevelopment())
 {
     app.Urls.Add("https://0.0.0.0:4200");
+    app.Urls.Add("https://0.0.0.0:7076");
 }
 
 app.Run();

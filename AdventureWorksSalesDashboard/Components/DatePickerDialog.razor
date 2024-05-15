@@ -1,0 +1,63 @@
+﻿<div class="date-picker-dialog">
+    @if (Title is not null)
+    {
+        <div style="font-weight: 500">@Title</div>
+    }
+    <MudDatePicker @bind-Date="SelectedDate"
+                   @ref="DatePickerRef"
+                   MinDate="MinDate"
+                   MaxDate="MaxDate"
+                   PickerVariant="PickerVariant.Static"
+                   DisableToolbar="true" />
+    <div class="action-buttons">
+        <MudButton OnClick="Submit"
+                   Disabled="SelectedDate is null"
+                   Variant="Variant.Filled"
+                   DisableElevation="true"
+                   Color="Color.Primary">
+            Select
+        </MudButton>
+        <MudButton OnClick="Cancel"
+                   Variant="Variant.Filled"
+                   DisableElevation="true">
+            Cancel
+        </MudButton>
+    </div>
+</div>
+
+@code {
+    public MudDatePicker? DatePickerRef { get; set; }
+
+    [CascadingParameter] 
+    public MudDialogInstance? MudDialog { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public DateTime? MinDate { get; set; }
+
+    [Parameter]
+    public DateTime? MaxDate { get; set; }
+
+    [Parameter]
+    public DateTime? SelectedDate { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            DatePickerRef?.GoToDate(SelectedDate ?? DateTime.Now.Date);
+        }
+    }
+
+    public void Submit()
+    {
+        MudDialog?.Close(DialogResult.Ok(SelectedDate));
+    }
+
+    public void Cancel()
+    {
+        MudDialog?.Cancel();
+    }
+}
