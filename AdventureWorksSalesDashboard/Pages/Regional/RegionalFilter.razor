@@ -15,6 +15,12 @@
                      MaxDate="RegionalFilterService.RegionalFilterState.MaxDate"
                      OnFromDateChanged="(newFromDate) => HandleFromDateChanged(newFromDate)"
                      OnToDateChanged="(newToDate) => HandleToDateChanged(newToDate)" />
+    <MudButton Variant="Variant.Filled"
+               DisableElevation="true"
+               Style="margin-top: 12px;"
+               OnClick="RegionalFilterService.Reset">
+        Reset
+    </MudButton>
 </div>
 
 @code {
