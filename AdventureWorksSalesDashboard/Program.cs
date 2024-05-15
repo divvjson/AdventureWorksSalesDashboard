@@ -47,6 +47,7 @@ app
 if (app.Environment.IsDevelopment())
 {
     app.Urls.Add("https://0.0.0.0:4200");
+    app.Urls.Add("https://0.0.0.0:7076");
 }
 
 app.Run();
