@@ -1,5 +1,6 @@
 ﻿@inject IDbContextFactory<AdventureWorksContext> DbFactory
 @inject RegionalFilterService RegionalFilterService
+@inject IDialogService DialogService
 
 <div class="regional-filter">
     <DateRangePicker FromDate="RegionalFilterService.RegionalFilterState.FromDate"
@@ -8,6 +9,12 @@
                      MaxDate="RegionalFilterService.RegionalFilterState.MaxDate"
                      OnFromDateChanged="(newFromDate) => HandleFromDateChanged(newFromDate)"
                      OnToDateChanged="(newToDate) => HandleToDateChanged(newToDate)" />
+    <MudButton Variant="Variant.Filled"
+               DisableElevation="true"
+               Style="margin-top: 12px;"
+               OnClick="OpenCountryPickerDialog">
+        Country
+    </MudButton>
     <MudButton Variant="Variant.Filled"
                DisableElevation="true"
                Style="margin-top: 12px;"
@@ -36,5 +43,23 @@
     {
         RegionalFilterService.RegionalFilterState.ToDate = newToDate;
         await RegionalFilterService.Update();
+    }
+
+    private async Task OpenCountryPickerDialog()
+    {
+        var context = DbFactory.CreateDbContext();
+
+        var parameters = new DialogParameters();
+
+        parameters.Add("Items", context.CountryRegions.AsQueryable());
+
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = true
+        };
+
+        var dialog = DialogService.Show<ItemPickerDialog<CountryRegion>>(null, parameters, options);
+        var result = await dialog.Result;
     }
 }
