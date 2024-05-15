@@ -15,7 +15,7 @@
         }
     </MudButton>
     <MudIconButton Icon="@Icons.Material.Filled.Close"
-                   OnClick="() => FromDate = null"
+                   OnClick="HandleFromDateCleared"
                    Disabled="FromDate is null"
                    Variant="Variant.Filled"
                    DisableElevation="true"
@@ -36,7 +36,7 @@
         }
     </MudButton>
     <MudIconButton Icon="@Icons.Material.Filled.Close"
-                   OnClick="() => ToDate = null"
+                   OnClick="HandleToDateCleared"
                    Disabled="ToDate is null"
                    Variant="Variant.Filled"
                    DisableElevation="true"
@@ -124,6 +124,18 @@
                 await OnFromDateChanged.InvokeAsync(FromDate);
             }
         }
+    }
+
+    public async Task HandleFromDateCleared()
+    {
+        FromDate = null;
+        await OnFromDateChanged.InvokeAsync(null);
+    }
+
+    public async Task HandleToDateCleared()
+    {
+        ToDate = null;
+        await OnToDateChanged.InvokeAsync(null);
     }
 
     public enum DateRangePickerSelection
