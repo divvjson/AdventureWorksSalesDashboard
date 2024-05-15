@@ -1,5 +1,5 @@
 ﻿@inject IDbContextFactory<AdventureWorksContext> DbFactory
-@inject LocalStorageService LocalStorageService
+@inject RegionalFilterService RegionalFilterService
 
 <div class="regional-filter">
 @*     <MudDatePicker Label="From" 
@@ -9,30 +9,30 @@
                    Variant="Variant.Filled"
                    Style="margin-top: 6px;" /> *@
 
-    <DateRangePicker FromDate="FromDate" 
-                     ToDate="ToDate"
-                     MinDate="MinDate"
-                     MaxDate="MaxDate" />
+    <DateRangePicker FromDate="RegionalFilterService.RegionalFilterState.FromDate"
+                     ToDate="RegionalFilterService.RegionalFilterState.ToDate"
+                     MinDate="RegionalFilterService.RegionalFilterState.MinDate"
+                     MaxDate="RegionalFilterService.RegionalFilterState.MaxDate"
+                     OnFromDateChanged="(newFromDate) => HandleFromDateChanged(newFromDate)"
+                     OnToDateChanged="(newToDate) => HandleToDateChanged(newToDate)" />
 </div>
 
 @code {
-    public DateTime? FromDate { get; set; }
-
-    public DateTime? ToDate { get; set; }
-
-    public DateTime? MinDate { get; set; }
-
-    public DateTime? MaxDate { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
-        var context = DbFactory.CreateDbContext();
-
-        var query = context.SalesOrderHeaders
-            .Where(salesOrderHeader => salesOrderHeader.Status != 6 && salesOrderHeader.Status != 4)
-            .Select(salesOrderHeader => salesOrderHeader.OrderDate);
-
-        MinDate = await query.MinAsync();
-        MaxDate = await query.MaxAsync();
+        await RegionalFilterService.Initialize();
     }
+
+    private async Task HandleFromDateChanged(DateTime? newFromDate)
+    {
+        RegionalFilterService.RegionalFilterState.FromDate = newFromDate;
+        await RegionalFilterService.Update();
+    }
+
+    private async Task HandleToDateChanged(DateTime? newToDate)
+    {
+        RegionalFilterService.RegionalFilterState.ToDate = newToDate;
+        await RegionalFilterService.Update();
+    }
+
 }

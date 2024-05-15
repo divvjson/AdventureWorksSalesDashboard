@@ -21,7 +21,12 @@ namespace AdventureWorksSalesDashboard.Services
 
         public async Task<T?> GetItemAsync<T>(string key)
         {
-            var value = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", key);
+            var value = await _jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
+
+            if (value is null)
+            {
+                return default;
+            }
 
             var valueDeserialized = JsonSerializer.Deserialize<T>(value);
 
