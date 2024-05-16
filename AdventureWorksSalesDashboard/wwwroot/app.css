@@ -33,3 +33,7 @@ body {
     display: flex;
     padding: 0;
 }
+
+.mud-dialog-content {
+    padding: 0 !important;
+}

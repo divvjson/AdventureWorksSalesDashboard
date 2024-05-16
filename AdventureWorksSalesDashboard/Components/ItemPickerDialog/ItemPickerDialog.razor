@@ -1,0 +1,117 @@
+﻿@using AdventureWorksSalesDashboard.Extensions
+@typeparam TItemPickerTemplate where TItemPickerTemplate : IItemPickerTemplate
+
+<MudDialog Style="max-width: 960px; width: 95%;">
+    <DialogContent>
+        <div class="item-picker-dialog">
+            <div class="title">
+                @Title
+            </div>
+            <div class="search">
+                <MudTextField T="string"
+                              @bind-Value="SearchText"
+                              Immediate="true"
+                              DebounceInterval="125"
+                              OnDebounceIntervalElapsed="Reload"
+                              Variant="Variant.Filled"
+                              Label="Search" />
+            </div>
+            <div class="table">
+                <MudTable ServerData="@(new Func<TableState, Task<TableData<TItemPickerTemplate>>>(ServerReload))"
+                          @ref="table"
+                          Dense="true">
+                    <HeaderContent>
+                        @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Select(property => property.Name))
+                        {
+                            <MudTh>@propertyName</MudTh>
+                        }
+                    </HeaderContent>
+                    <RowTemplate>
+                        @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Select(property => property.Name))
+                        {
+                            <MudTd DataLabel="@propertyName">@GetPropertyValue(@context, propertyName)</MudTd>
+                        }
+                    </RowTemplate>
+                </MudTable>
+            </div>
+            <div class="selected">
+                Selected
+            </div>
+            <div class="actions">
+                Actions
+            </div>
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    public MudDialogInstance? MudDialog { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public required string Title { get; set; }
+
+    [EditorRequired]
+    [Parameter]
+    public required IQueryable<TItemPickerTemplate> Items { get; set; }
+
+    private MudTable<TItemPickerTemplate>? table;
+
+    public string SearchText { get; set; } = string.Empty;
+
+    private async Task<TableData<TItemPickerTemplate>> ServerReload(TableState state)
+    {
+        var query = Items;
+
+        if (string.IsNullOrWhiteSpace(SearchText) == false)
+        {
+            query = query.WhereDynamic(SearchText);
+        }
+
+        var totalItems = await query.CountAsync();
+
+        var page = query.Skip(state.Page * state.PageSize).Take(state.PageSize);
+
+        var data = await page.ToListAsync();
+
+        int requiredRows = state.PageSize;
+
+        while (data.Count < requiredRows)
+        {
+            var emptyInstance = Activator.CreateInstance<TItemPickerTemplate>();
+
+            data.Add(emptyInstance);
+        }
+
+        return new TableData<TItemPickerTemplate>
+        { 
+            TotalItems = totalItems,
+            Items = data
+        };
+    }
+
+    private object GetPropertyValue(TItemPickerTemplate item, string propertyName)
+    {
+        var propertyInfo = typeof(TItemPickerTemplate).GetProperty(propertyName);
+
+        if (propertyInfo is null)
+        {
+            return string.Empty;
+        }
+
+        var propertyValue = propertyInfo.GetValue(item);
+
+        if (propertyValue is null)
+        {
+            return string.Empty;
+        }
+
+        return propertyValue;
+    }
+
+    private void Reload()
+    {
+        table?.ReloadServerData();
+    }
+}

@@ -1,4 +1,5 @@
-﻿@inject IDbContextFactory<AdventureWorksContext> DbFactory
+﻿@using AdventureWorksSalesDashboard.Components.ItemPickerDialog
+@inject IDbContextFactory<AdventureWorksContext> DbFactory
 @inject RegionalFilterService RegionalFilterService
 @inject IDialogService DialogService
 
@@ -51,7 +52,17 @@
 
         var parameters = new DialogParameters();
 
-        parameters.Add("Items", context.CountryRegions.AsQueryable());
+        var items = context.CountryRegions
+            .Select(countryRegion => new CountryPickerTemplate
+            {
+                Identifier = countryRegion.CountryRegionCode,
+                Name = countryRegion.Name,
+                CountryRegionCode = countryRegion.CountryRegionCode
+            })
+            .AsQueryable();
+
+        parameters.Add("Title", "Country");
+        parameters.Add("Items", items);
 
         var options = new DialogOptions
         {
@@ -59,7 +70,16 @@
             DisableBackdropClick = true
         };
 
-        var dialog = DialogService.Show<ItemPickerDialog<CountryRegion>>(null, parameters, options);
+        var dialog = DialogService.Show<ItemPickerDialog<CountryPickerTemplate>>(null, parameters, options);
         var result = await dialog.Result;
+    }
+
+    public class CountryPickerTemplate : IItemPickerTemplate
+    {
+        public required object Identifier { get; set; }
+
+        public required string Name { get; set; }
+
+        public required string CountryRegionCode { get; set; }
     }
 }
