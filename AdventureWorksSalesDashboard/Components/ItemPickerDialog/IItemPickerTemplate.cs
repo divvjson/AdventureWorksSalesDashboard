@@ -2,6 +2,6 @@
 {
     public interface IItemPickerTemplate
     {
-        public object Identifier { get; set; }
+        public object Key { get; set; }
     }
 }

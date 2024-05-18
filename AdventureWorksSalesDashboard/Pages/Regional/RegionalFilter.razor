@@ -55,7 +55,7 @@
         var items = context.CountryRegions
             .Select(countryRegion => new CountryPickerTemplate
             {
-                Identifier = countryRegion.CountryRegionCode,
+                Key = countryRegion.CountryRegionCode,
                 Name = countryRegion.Name,
                 CountryRegionCode = countryRegion.CountryRegionCode
             })
@@ -76,7 +76,7 @@
 
     public class CountryPickerTemplate : IItemPickerTemplate
     {
-        public required object Identifier { get; set; }
+        public required object Key { get; set; }
 
         public required string Name { get; set; }
 

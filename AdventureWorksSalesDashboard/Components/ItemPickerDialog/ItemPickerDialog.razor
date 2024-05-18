@@ -21,15 +21,22 @@
                           @ref="table"
                           Dense="true">
                     <HeaderContent>
-                        @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Select(property => property.Name))
+                        @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Where(property => property.Name != "Key").Select(property => property.Name))
                         {
                             <MudTh>@propertyName</MudTh>
                         }
                     </HeaderContent>
                     <RowTemplate>
-                        @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Select(property => property.Name))
+                        @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Where(property => property.Name != "Key").Select(property => property.Name))
                         {
-                            <MudTd DataLabel="@propertyName">@GetPropertyValue(@context, propertyName)</MudTd>
+                            @if (IsEmptyRow(@context))
+                            {
+                                <MudTd DataLabel="@propertyName">Empty</MudTd>
+                            }
+                            else
+                            {
+                                <MudTd DataLabel="@propertyName">@GetPropertyValue(@context, propertyName)</MudTd>
+                            }
                         }
                     </RowTemplate>
                 </MudTable>
@@ -89,6 +96,19 @@
             TotalItems = totalItems,
             Items = data
         };
+    }
+
+    private bool IsEmptyRow(TItemPickerTemplate item)
+    {
+        foreach (var property in item.GetType().GetProperties())
+        {
+            if (property.GetValue(item) is not null)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private object GetPropertyValue(TItemPickerTemplate item, string propertyName)
