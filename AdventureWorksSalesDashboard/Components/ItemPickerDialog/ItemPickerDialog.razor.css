@@ -4,6 +4,11 @@
     padding: 16px;
 }
 
+::deep .mud-table-cell--empty {
+    background-color: whitesmoke;
+    height: 33.02px;
+}
+
 .title {
     grid-area: title;
     display: flex;
