@@ -21,12 +21,27 @@
                           @ref="table"
                           Dense="true">
                     <HeaderContent>
+                        <MudTh></MudTh>
                         @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Where(property => property.Name != "Key").Select(property => property.Name))
                         {
                             <MudTh>@propertyName</MudTh>
                         }
                     </HeaderContent>
                     <RowTemplate>
+                        @if (IsEmptyRow(@context))
+                        {
+                            <MudTd Class="mud-table-cell--empty" />
+                        }
+                        else
+                        {
+                            <MudTd>
+                                <MudCheckBox T="bool" 
+                                             Color="Color.Primary" 
+                                             DisableRipple="false" 
+                                             Dense="true" />
+                            </MudTd>
+                        }
+
                         @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Where(property => property.Name != "Key").Select(property => property.Name))
                         {
                             @if (IsEmptyRow(@context))
