@@ -4,6 +4,10 @@
     padding: 16px;
 }
 
+::deep .mud-table > .mud-table-container > .mud-table-root > .mud-table-head > .mud-table-row > .mud-table-cell:first-of-type > .mud-table-cell-checkbox {
+    visibility: hidden;
+}
+
 ::deep .mud-table-cell {
     height: 33.02px;
 }

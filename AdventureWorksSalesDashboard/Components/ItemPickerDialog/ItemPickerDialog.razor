@@ -1,5 +1,6 @@
 ﻿@using AdventureWorksSalesDashboard.Extensions
 @typeparam TItemPickerTemplate where TItemPickerTemplate : IItemPickerTemplate
+@inject IBrowserViewportService BrowserViewportService
 
 <MudDialog Style="max-width: 960px; width: 95%;">
     <DialogContent>
@@ -19,28 +20,16 @@
             <div class="table">
                 <MudTable ServerData="@(new Func<TableState, Task<TableData<TItemPickerTemplate>>>(ServerReload))"
                           @ref="table"
-                          Dense="true">
+                          MultiSelection="true"
+                          SelectOnRowClick="false"
+                          Dense="false">
                     <HeaderContent>
-                        <MudTh>Select</MudTh>
                         @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Where(property => property.Name != "Key").Select(property => property.Name))
                         {
                             <MudTh>@propertyName</MudTh>
                         }
                     </HeaderContent>
                     <RowTemplate>
-                        @if (IsEmptyRow(@context))
-                        {
-                            <MudTd Class="mud-table-cell--empty" />
-                        }
-                        else
-                        {
-                            <MudTd>
-                                <MudCheckBox T="bool"
-                                             Color="Color.Primary"
-                                             Dense="true" />
-                            </MudTd>
-                        }
-
                         @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Where(property => property.Name != "Key").Select(property => property.Name))
                         {
                             @if (IsEmptyRow(@context))
