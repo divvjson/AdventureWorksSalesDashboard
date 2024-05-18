@@ -21,7 +21,7 @@
                           @ref="table"
                           Dense="true">
                     <HeaderContent>
-                        <MudTh></MudTh>
+                        <MudTh>Select</MudTh>
                         @foreach (var propertyName in typeof(TItemPickerTemplate).GetProperties().Where(property => property.Name != "Key").Select(property => property.Name))
                         {
                             <MudTh>@propertyName</MudTh>
@@ -35,9 +35,8 @@
                         else
                         {
                             <MudTd>
-                                <MudCheckBox T="bool" 
-                                             Color="Color.Primary" 
-                                             DisableRipple="false" 
+                                <MudCheckBox T="bool"
+                                             Color="Color.Primary"
                                              Dense="true" />
                             </MudTd>
                         }

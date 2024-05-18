@@ -4,9 +4,12 @@
     padding: 16px;
 }
 
+::deep .mud-table-cell {
+    height: 33.02px;
+}
+
 ::deep .mud-table-cell--empty {
     background-color: whitesmoke;
-    height: 33.02px;
 }
 
 .title {
